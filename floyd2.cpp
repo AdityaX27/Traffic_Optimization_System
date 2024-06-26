@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include "gnuplot-iostream.h" // Include gnuplot-iostream header
 using namespace std;
 const int N = 1000;
 const int INF = 1e9 + 10;
@@ -36,6 +37,31 @@ void floydWarshall(int n) {
             }
         }
     }
+}
+
+void plotMatrix(int n) {
+    Gnuplot gp;
+    gp << "set title 'Optimized Shortest Time Matrix (hrs)'\n";
+    gp << "set xlabel 'Nodes'\n";
+    gp << "set ylabel 'Nodes'\n";
+    gp << "set zlabel 'Time'\n";
+    gp << "set xrange [1:" << n << "]\n";
+    gp << "set yrange [1:" << n << "]\n";
+    gp << "set zrange [0:]\n";
+    gp << "set dgrid3d " << n << "," << n << "\n";
+    gp << "set hidden3d\n";
+    gp << "splot '-' with lines\n";
+
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= n; ++j) {
+            if (ko[i][j] == INF) {
+                gp << i << " " << j << " " << 0 << "\n";
+            } else {
+                gp << i << " " << j << " " << ko[i][j] << "\n";
+            }
+        }
+    }
+    gp << "e\n";
 }
 
 void printMatrix(int n) {
@@ -94,6 +120,9 @@ int main() {
     // Printing the optimized shortest time matrix
     printMatrix(n);
 
+    // Plotting the matrix
+    plotMatrix(n);
+
     char choice;
     do {
         int u, v;
@@ -111,3 +140,4 @@ int main() {
 
     return 0;
 }
+
